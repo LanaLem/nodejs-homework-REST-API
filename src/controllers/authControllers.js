@@ -6,14 +6,14 @@ require('dotenv').config();
 const { SECRET_KEY } = process.env;
 
 const register = async (req, res, next) => {
-    const { email, password } = req.body;
+    const { email, password, subscription } = req.body;
     const existingEmail = await User.findOne({ email });
     if (existingEmail) {
         return res.status(409).json({ "message": 'Email in use' });
     }
 
     try {
-        const user = new User({ email, password });
+        const user = new User({ email, password, subscription });
         await user.save();
         return res.status(201).json({
             user: {
